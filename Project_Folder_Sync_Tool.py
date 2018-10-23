@@ -125,8 +125,10 @@ def main():
                    distutils.dir_util.mkpath(Path + "\\" + ws.cell(i, 1).value + "\\Software"+"\\nvram")
                    print(ws.cell(i, 1).value + " project folder created!")
                 i=i+1
+
         elif args.Sync :
             project_sync(ws,Path,row_count,username_formating)
+
 
 #        New_Path=os.path.split(Path)[0]+"\\"
 
@@ -155,8 +157,10 @@ def main():
             os.remove('tmp.ico')
             root.withdraw()
             tkinter.messagebox.showinfo("File format error", "File not found")
-
-
+    wb.close()
+    t_vcheck = time.clock()
+    version_check()
+    print("version_check()=" + str(time.clock() - t_vcheck) + "sec")
 
 
 def project_sync(ws,Path,row_count,username_formating):
@@ -168,7 +172,7 @@ def project_sync(ws,Path,row_count,username_formating):
     while i<=row_count:
         project_rd = ws.cell(i, 12).value
         project_rd_formating = str.upper(project_rd).replace(".", "").replace(" ", "")
-        #print( project_rd_formating)
+
         if (project_rd_formating) != (username_formating):
             root = Tk()
             with open('tmp.ico', 'wb') as tmp:
@@ -200,6 +204,7 @@ def project_sync(ws,Path,row_count,username_formating):
                 tkinter.messagebox.showinfo("No Such Folder","Folder missing in project '" + ws.cell(i,1).value + "'")
 
         i = i + 1
+
 #def handle():
 
     #print("成功建立'" + Base_filename + "new.xlsx'")
@@ -222,7 +227,7 @@ def version_check():
         latest_hdk =ws.cell(row_count, 2).value
         hdk_idnew=int(ws.cell(row_count,1).value)
         wb.close()
-        if hdk_idnew is not hdk_id:
+        if hdk_idnew != hdk_id:
             #print(hdk_idnew)
             #print(hdk_id)
             root = Tk()
@@ -258,9 +263,7 @@ def version_check():
         tkinter.messagebox.showinfo("Offline Mode","Please login to azwave.com for HDK version check")
 
 if __name__ == '__main__':
-  main()
+    main()
+    print("Total="+str(time.clock()-t0)+"sec")
 
-print("Total="+str(time.clock()-t0)+"sec")
-t_vcheck = time.clock()
-version_check()
-print("version_check()=" + str(time.clock() - t_vcheck) + "sec")
+
